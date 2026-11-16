@@ -1,0 +1,22 @@
+# Local data and generated artifacts
+data/*
+!data/.gitkeep
+artifacts/*
+!artifacts/.gitkeep
+reports/*
+!reports/.gitkeep
+
+# Python cache and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Experiment outputs
+*.pt
+*.pth
+*.ckpt
+*.nii
+*.nii.gz

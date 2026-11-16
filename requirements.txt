@@ -1,0 +1,11 @@
+torch
+monai
+nibabel
+numpy
+scipy
+matplotlib
+plotly
+streamlit
+pandas
+pyyaml
+pytest
