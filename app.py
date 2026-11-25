@@ -223,7 +223,7 @@ def main() -> None:
         :root {
             color-scheme: dark;
             --nm-ink: #edf5ff;
-            --nm-muted: #9db0c5;
+            --nm-muted: #b8c9dd;
             --nm-line: rgba(159, 189, 218, 0.16);
             --nm-cyan: #62d7cf;
             --nm-blue: #79a9ff;
@@ -278,9 +278,15 @@ def main() -> None:
         .nm-subtitle {
             max-width: 46rem;
             margin: 0.8rem 0 0;
-            color: #b6c6d8;
+            color: #c4d4e4;
             font-size: 1.02rem;
             line-height: 1.65;
+        }
+        .nm-team {
+            margin: 0.65rem 0 0;
+            color: #d5e2ef;
+            font-size: 0.88rem;
+            font-weight: 550;
         }
         .nm-badge {
             flex: 0 0 auto;
@@ -301,7 +307,20 @@ def main() -> None:
         }
         [data-testid="stMetricLabel"] { color: #aabbd0; }
         [data-testid="stMetricValue"] { color: var(--nm-ink); }
-        [data-testid="stAlert"] p { color: #263547 !important; font-weight: 600; }
+        [data-testid="stAlertContentInfo"] {
+            border: 1px solid rgba(98, 215, 207, 0.42);
+            border-radius: 12px;
+            background: linear-gradient(120deg, #19364b, #1d2f45) !important;
+        }
+        [data-testid="stAlertContentInfo"] p {
+            color: #f2f7ff !important;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        [data-testid="stAlertContentWarning"] p {
+            color: #263547 !important;
+            font-weight: 600;
+        }
         [data-testid="stFileUploader"] section,
         [data-testid="stImage"] img {
             border-radius: 14px;
@@ -337,6 +356,7 @@ def main() -> None:
             <p class="nm-eyebrow">NEUROMAP · RESEARCH WORKSPACE</p>
             <h1>Brain MRI, made more understandable.</h1>
             <p class="nm-subtitle">Explore multimodal scans, review segmentation overlays, and inspect volume measurements in one focused workspace.</p>
+            <p class="nm-team">Fizza Fatima (24i-3077) · Irtaza Abid (24i-3085)</p>
           </div>
           <div class="nm-badge">2D / 3D U-Net · Research prototype</div>
         </section>
