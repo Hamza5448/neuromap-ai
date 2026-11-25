@@ -7,7 +7,12 @@ from pathlib import Path
 
 import yaml
 
-from src.neuromap.data_loader import discover_cases, save_split_manifest, split_cases
+from src.neuromap.data_loader import (
+    deduplicate_cases_by_label,
+    discover_cases,
+    save_split_manifest,
+    split_cases,
+)
 
 
 def main() -> None:
@@ -19,9 +24,20 @@ def main() -> None:
         type=Path,
         default=Path("artifacts/splits/task01_brain_tumour.json"),
     )
+    parser.add_argument(
+        "--deduplicate-identical-labels",
+        action="store_true",
+        help="Keep one case per identical binary label volume before splitting.",
+    )
     args = parser.parse_args()
     config = yaml.safe_load(args.config.read_text(encoding="utf-8"))
     cases = discover_cases(args.data_root)
+    if args.deduplicate_identical_labels:
+        cases, removed = deduplicate_cases_by_label(cases)
+        print(
+            f"Removed {len(removed)} cases with duplicate binary labels: "
+            f"{[case.patient_id for case in removed]}"
+        )
     unlabeled = [case.patient_id for case in cases if case.label_path is None]
     if unlabeled:
         raise ValueError(f"Missing labels for {len(unlabeled)} cases: {unlabeled[:3]}")
