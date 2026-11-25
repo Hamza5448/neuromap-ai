@@ -1,12 +1,12 @@
-GitHub branch handoff
+GitHub handoff
 
-The project targets https://github.com/Hamza5448/neuromap-ai. Its local
-feature/finalize-neuromap-project branch is based on the remote main branch.
-Push this branch and merge it into main through the repository's normal review
-process.
+The project is at https://github.com/Hamza5448/neuromap-ai. The core
+implementation has been merged into main through pull request #1. Keep future
+changes on a project-specific branch and merge them through the repository's
+normal review process.
 
 The local repository is rooted in the NeuroMap project folder. Never push the
 parent C:\Users\Lab repository. Dataset files, virtual environments,
 checkpoints, split manifests, and generated reports are excluded by .gitignore.
-The split manifest contains machine-specific E:\NeuroMap paths and must be
-recreated on each machine.
+Final deliverables are in submission/. The model archive in artifacts/ is
+local-only and should be shared with the evaluator through approved storage.
