@@ -2,10 +2,10 @@
 
 ## Brain Tumor Segmentation and Volumetric MRI Analysis
 
-**Project type:** Software-based deep learning research prototype  
-**Domain:** Healthcare AI and medical image processing  
-**Primary interface:** Streamlit web application  
-**Primary dataset:** Medical Segmentation Decathlon, Task01_BrainTumour  
+- **Project type:** Software-based deep learning research prototype
+- **Domain:** Healthcare AI and medical image processing
+- **Primary interface:** Streamlit web application
+- **Primary dataset:** Medical Segmentation Decathlon, Task01_BrainTumour
 **Planned submission:** December 6, 2026
 
 > **Important:** NeuroMap AI is an academic research prototype. It is not a
@@ -20,8 +20,10 @@ segmentation masks, display the predictions as overlays on MRI slices, and
 calculate the physical volume of the predicted region.
 
 The primary implementation will use a 2D U-Net with four MRI modalities and
-will be delivered through an interactive Streamlit application. The initial
-release will focus on a complete, reproducible, evaluated Stage A system.
+will be delivered through an interactive Streamlit application. The Stage A
+comparison also includes a FLAIR-only 2D model and a patch-based multimodal 3D
+U-Net, with full-volume 3D predictions reconstructed by sliding-window
+inference.
 Longitudinal comparison of follow-up scans is an optional extension and will
 not block the primary release.
 
@@ -52,7 +54,8 @@ single whole-tumor-region mask. Multi-region segmentation is an enhancement.
 - Train and evaluate a baseline multimodal 2D U-Net.
 - Provide a working Streamlit workflow from upload through export.
 - Report segmentation and volumetric results honestly on held-out patients.
-- Compare four-modality input with a FLAIR-only baseline.
+- Compare four-modality 2D input with a FLAIR-only 2D baseline.
+- Compare slice-based 2D inference with patch-based 3D inference.
 
 ### Stage A success criteria
 
@@ -78,6 +81,10 @@ No performance value will be claimed before experiments are completed.
   - FLAIR.
 - Binary whole-tumor-region segmentation.
 - 2D U-Net training and inference.
+- Patch-based 3D U-Net training and sliding-window inference.
+- Validation-only threshold selection and held-out evaluation for each model.
+- Unaugmented multimodal 2D, augmented multimodal 2D, FLAIR-only 2D, and 3D
+  model selection in the research interface.
 - MRI slice and modality navigation.
 - Segmentation overlays.
 - Physical volume calculation in mL or cm³.
@@ -91,7 +98,8 @@ No performance value will be claimed before experiments are completed.
 - Multi-region segmentation for edema, enhancing tumor, and non-enhancing or
   necrotic tumor core.
 - Longitudinal post-treatment MRI comparison.
-- Additional model architectures.
+- Architectures beyond the planned multimodal 2D, FLAIR-only 2D, and
+  multimodal patch-based 3D U-Net comparisons.
 - Clinical deployment or diagnostic integration.
 
 The optional features will be considered only after the Stage A system is
@@ -159,8 +167,11 @@ reconstructs the prediction, and skip connections preserve spatial detail.
 
 1. Establish a four-modality U-Net baseline.
 2. Train a FLAIR-only U-Net using the same evaluation protocol.
-3. Compare segmentation and volumetric performance.
-4. Investigate multi-region segmentation only if time and results justify it.
+3. Train a four-modality 3D U-Net on fixed-size patches and reconstruct
+   full-volume predictions with overlapping sliding windows.
+4. Compare segmentation and volumetric performance across the 2D and 3D
+   models, selecting thresholds and models using validation data only.
+5. Investigate multi-region segmentation only if time and results justify it.
 
 Hyperparameters will be selected using validation results and available GPU
 memory. Training may use a local GPU, Google Colab, or Kaggle.
@@ -305,7 +316,7 @@ NeuroMap/
 | Risk or limitation | Planned control |
 |---|---|
 | Dataset download or access problems | Use official AWS Open Data and S3 sources |
-| Limited GPU memory | Start with a 2D U-Net and use cloud GPU resources |
+| Limited GPU memory | Use small 3D training patches, batch size one, and sliding-window inference |
 | Class imbalance | Use Dice-based loss and appropriate sampling |
 | Incorrect preprocessing | Validate metadata and inspect images and masks visually |
 | Data leakage | Split by patient, never by slice |
@@ -318,13 +329,15 @@ NeuroMap/
 
 1. Does multimodal MRI input improve glioma segmentation compared with
    FLAIR-only input using the same U-Net architecture?
-2. How well does a model trained on pre-treatment glioma MRI generalize to
+2. How does patch-based 3D segmentation compare with slice-based 2D
+   segmentation on the same patient-level split?
+3. How well does a model trained on pre-treatment glioma MRI generalize to
    post-treatment MRI?
-3. How accurately can the system estimate changes in corresponding
+4. How accurately can the system estimate changes in corresponding
    glioma-related region volumes between follow-up examinations?
 
-The first question is the primary research question. The second and third are
-advanced directions.
+The first two questions are the primary research questions. The remaining
+questions are advanced directions.
 
 ## 14. Deliverables
 
@@ -332,6 +345,7 @@ advanced directions.
 - Patient-level train, validation, and test split.
 - MRI preprocessing pipeline.
 - Implemented 2D U-Net.
+- Implemented patch-based 3D U-Net training and sliding-window inference.
 - Trained model checkpoint.
 - Evaluation metrics and experiment report.
 - Streamlit application.

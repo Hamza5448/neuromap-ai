@@ -1,8 +1,9 @@
 # NeuroMap AI
 
 NeuroMap AI is a software-based research prototype for brain MRI tumor-region
-segmentation and volumetric analysis. The initial release uses a multimodal
-2D U-Net and a Streamlit interface.
+segmentation and volumetric analysis. The project compares unaugmented and
+augmented multimodal 2D U-Nets, a FLAIR-only 2D U-Net, and a patch-based
+multimodal 3D U-Net through a Streamlit interface.
 
 The project is not a medical diagnostic or treatment system.
 
@@ -12,6 +13,7 @@ The project is not a medical diagnostic or treatment system.
 - Four MRI modalities in NIfTI format.
 - Binary whole-tumor-region segmentation.
 - Patient-level train, validation, and test splits.
+- Validation-only threshold and model selection before held-out testing.
 - Held-out evaluation using segmentation and volumetric metrics.
 - Streamlit visualization, measurement, and export workflow.
 
@@ -21,19 +23,29 @@ The project is not a medical diagnostic or treatment system.
 NeuroMap/
 ├── app.py                         # Streamlit entry point
 ├── train.py                       # Training entry point
+├── train_3d.py                    # Patch-based 3D training entry point
 ├── prepare_data.py                # Split and dataset audit entry point
 ├── evaluate.py                    # Evaluation entry point
+├── evaluate_3d.py                 # Sliding-window 3D evaluation
+├── tune_threshold.py              # 2D validation threshold selection
+├── tune_threshold_3d.py           # 3D validation threshold selection
+├── compare_validation_models.py   # Validation-only model selection
 ├── requirements.txt               # Python dependencies
 ├── PROJECT_BRIEF.md               # Partner-facing project definition
 ├── configs/
-│   └── baseline.yaml              # Reproducible baseline configuration
+│   ├── baseline.yaml              # Reproducible 2D baseline configuration
+│   └── task_a_3d.yaml             # Patch-based 3D configuration
 ├── src/
 │   └── neuromap/
 │       ├── data_loader.py
+│       ├── data_loader_3d.py
 │       ├── preprocessing.py
 │       ├── model.py
+│       ├── model_3d.py
 │       ├── training.py
+│       ├── training_3d.py
 │       ├── inference.py
+│       ├── inference_3d.py
 │       ├── metrics.py
 │       ├── volume.py
 │       └── visualization.py
@@ -63,8 +75,29 @@ control. See `.gitignore`.
 | PyYAML | Configuration loading |
 | pytest | Focused tests |
 
-Dependency versions will be pinned after the Python interpreter and GPU
-environment are confirmed.
+## Local setup
+
+The verified training environment uses Python 3.11, PyTorch 2.11.0 with CUDA
+12.8, and MONAI 1.6.1. Dependency names are listed in `requirements.txt`; install
+a PyTorch build compatible with the local GPU and driver before running the
+experiments. Dataset files, checkpoints, and generated JSON reports are
+machine-local and are intentionally not included in the repository.
+
+On Windows PowerShell:
+
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+python -m pytest -q
+```
+
+To run the app, first place the dataset and trained checkpoints at the
+configured local paths (or set the `NEUROMAP_*` path overrides documented
+below). The split manifest is local and machine-specific; regenerate it on the
+target computer rather than copying the ignored manifest.
 
 ## External resources
 
@@ -75,7 +108,10 @@ environment are confirmed.
 - [Streamlit documentation](https://docs.streamlit.io/)
 
 The dataset must be downloaded from an official source and stored locally or
-in approved cloud storage. It must not be committed to GitHub.
+in approved cloud storage. It must not be committed to GitHub. Local datasets
+and checkpoints are ignored by Git. The generated split manifest also contains
+machine-specific absolute data paths and is ignored; recreate it on each
+machine from the documented seed and data root.
 
 ## Planned execution order
 
@@ -96,6 +132,150 @@ python prepare_data.py --data-root data/raw/Task01_BrainTumour
 
 The manifest is written to `artifacts/splits/` and is reused by `train.py` so
 future runs cannot silently change patient membership.
+
+The error analysis found exact duplicate binary labels whose MRI volumes match
+after per-modality intensity normalization, including duplicates across the
+original split boundaries. Prepare a deduplicated split before the next run:
+
+```powershell
+python prepare_data.py `
+    --data-root data/raw/Task01_BrainTumour `
+    --manifest artifacts/splits/task01_brain_tumour_deduplicated.json `
+    --deduplicate-identical-labels
+python train.py `
+    --data-root data/raw/Task01_BrainTumour `
+    --config configs/task_a_multimodal.yaml `
+    --manifest artifacts/splits/task01_brain_tumour_deduplicated.json `
+    --output artifacts/checkpoints/baseline_deduplicated.pt
+```
+
+This changes patient membership; start a fresh run rather than using `--resume`
+with the old checkpoint. Training slices are shuffled each epoch and receive
+paired random in-plane flips; validation remains unaugmented. Losses are saved
+to a CSV beside the checkpoint (or to `--history` if supplied). See
+`reports/error_analysis.md` and its overlays for the findings behind this
+change. The original held-out metrics are provisional because of the
+cross-split duplicates.
+
+The FLAIR-only comparison uses the same frozen manifest and can be trained
+independently:
+
+```powershell
+python train.py `
+    --data-root data/raw/Task01_BrainTumour `
+    --config configs/task_a_flair.yaml `
+    --manifest artifacts/splits/task01_brain_tumour_deduplicated.json `
+    --output artifacts/checkpoints/flair_deduplicated.pt
+```
+
+For each checkpoint, choose a threshold using only its corrected validation
+patients, then use that fixed threshold on test:
+
+```powershell
+python tune_threshold.py `
+    --checkpoint artifacts/checkpoints/baseline_deduplicated.pt `
+    --config configs/task_a_multimodal.yaml `
+    --manifest artifacts/splits/task01_brain_tumour_deduplicated.json `
+    --output reports/task_a_multimodal_thresholds.json
+python tune_threshold.py `
+    --checkpoint artifacts/checkpoints/flair_deduplicated.pt `
+    --config configs/task_a_flair.yaml `
+    --manifest artifacts/splits/task01_brain_tumour_deduplicated.json `
+    --output reports/task_a_flair_thresholds.json
+```
+
+To continue an interrupted run from the checkpoint in `artifacts/checkpoints/baseline.pt`
+through the configured epoch count, add `--resume`:
+
+```powershell
+python train.py --data-root data/raw/Task01_BrainTumour --resume
+```
+
+Each completed epoch is saved for resumption, while `model_state_dict` remains
+the best-validation model for inference.
+
+Evaluate the best checkpoint on the patient-level test split recorded in the
+manifest. Predictions are resized back to each scan's native in-plane grid
+before calculating 3D segmentation metrics and absolute volume error in mL:
+
+```powershell
+python evaluate.py `
+    --checkpoint artifacts/checkpoints/baseline_deduplicated.pt `
+    --config configs/task_a_multimodal.yaml `
+    --manifest artifacts/splits/task01_brain_tumour_deduplicated.json `
+    --threshold 0.5 `
+    --output reports/task_a_multimodal_test.json
+```
+
+The per-patient results and macro averages are written to
+the selected output file. Replace `0.5` with the validation-selected
+threshold, then run the equivalent evaluation for the FLAIR checkpoint.
+
+## Patch-based 3D comparison
+
+The 3D experiment uses 96 x 96 x 64 patches, a batch size of one, and two
+patches per training patient per epoch. CUDA bfloat16 is used when supported.
+Validation loss is measured on a fixed foreground-centered patch per patient;
+threshold selection uses full-volume validation predictions. Final predictions
+are reconstructed with overlapping, Gaussian-weighted sliding windows. The
+3D model and its optimizer can be resumed from the checkpoint.
+
+```powershell
+python train_3d.py `
+    --config configs/task_a_3d.yaml `
+    --manifest artifacts/splits/task01_brain_tumour_deduplicated.json `
+    --output artifacts/checkpoints/unet_3d_deduplicated.pt
+```
+
+Add `--resume` to continue an interrupted 3D training run. After training,
+choose a threshold on validation only, then evaluate once on the held-out test
+split:
+
+```powershell
+python tune_threshold_3d.py `
+    --checkpoint artifacts/checkpoints/unet_3d_deduplicated.pt `
+    --config configs/task_a_3d.yaml `
+    --manifest artifacts/splits/task01_brain_tumour_deduplicated.json
+python compare_validation_models.py `
+    --candidate baseline=reports/task_a_multimodal_unaugmented_thresholds.json `
+    --candidate augmented=reports/task_a_multimodal_augmented_thresholds.json `
+    --candidate flair=reports/task_a_flair_thresholds.json `
+    --candidate 3d=reports/task_a_3d_thresholds.json
+python evaluate_3d.py `
+    --checkpoint artifacts/checkpoints/unet_3d_deduplicated.pt `
+    --config configs/task_a_3d.yaml `
+    --manifest artifacts/splits/task01_brain_tumour_deduplicated.json `
+    --threshold <validation-selected-threshold>
+```
+
+The comparison command chooses a model using validation Dice, with lower mean
+volume error as the tie-breaker. Do not select a model or threshold using test
+metrics. Evaluate each candidate once with its validation-selected threshold;
+report test results descriptively after model selection is frozen.
+
+## Interactive app
+
+The sidebar lets the user choose the unaugmented or augmented multimodal 2D
+model, the FLAIR-only 2D model, or the 3D model. When the validation comparison
+report exists, its winning candidate becomes the default model. Each model
+loads its validation-selected threshold from its corresponding threshold
+report. The uploaded 4D NIfTI must contain T1, T1ce, T2, and FLAIR channels in
+that order; the FLAIR-only model uses its final channel. Override model paths
+with `NEUROMAP_CHECKPOINT` / `NEUROMAP_CONFIG` for unaugmented 2D,
+`NEUROMAP_AUGMENTED_CHECKPOINT` / `NEUROMAP_AUGMENTED_CONFIG` for augmented 2D,
+`NEUROMAP_FLAIR_CHECKPOINT` / `NEUROMAP_FLAIR_CONFIG` for FLAIR-only 2D, and
+`NEUROMAP_3D_CHECKPOINT` / `NEUROMAP_3D_CONFIG` for 3D.
+Inference stays disabled until the checkpoint's matching
+`<checkpoint-stem>_history.csv` confirms all configured epochs have completed.
+
+Run the interactive app after the multimodal checkpoint is present:
+
+```powershell
+streamlit run app.py
+```
+
+Set `NEUROMAP_CHECKPOINT` and `NEUROMAP_CONFIG` to use different local model
+artifacts.
 
 ## GPU training in Google Colab
 

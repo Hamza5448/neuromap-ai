@@ -5,6 +5,9 @@ artifacts/*
 !artifacts/.gitkeep
 reports/*
 !reports/.gitkeep
+!reports/*.md
+!reports/*.txt
+reports/error_analysis/
 
 # Python cache and local environments
 __pycache__/

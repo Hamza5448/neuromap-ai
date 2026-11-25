@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 from pathlib import Path
 from typing import Iterable
 
@@ -34,9 +35,10 @@ def train_epoch(
     model.train()
     total_loss = 0.0
     batches = 0
+    non_blocking = device.type == "cuda"
     for batch in loader:
-        images = batch["image"].to(device)
-        masks = batch["mask"].to(device)
+        images = batch["image"].to(device, non_blocking=non_blocking)
+        masks = batch["mask"].to(device, non_blocking=non_blocking)
         optimizer.zero_grad(set_to_none=True)
         logits = model(images)
         loss = segmentation_loss(logits, masks)
@@ -59,9 +61,11 @@ def evaluate_epoch(
     model.eval()
     total_loss = 0.0
     batches = 0
+    non_blocking = device.type == "cuda"
     for batch in loader:
-        logits = model(batch["image"].to(device))
-        loss = segmentation_loss(logits, batch["mask"].to(device))
+        logits = model(batch["image"].to(device, non_blocking=non_blocking))
+        masks = batch["mask"].to(device, non_blocking=non_blocking)
+        loss = segmentation_loss(logits, masks)
         total_loss += float(loss.item())
         batches += 1
     if batches == 0:
@@ -69,8 +73,45 @@ def evaluate_epoch(
     return total_loss / batches
 
 
-def save_checkpoint(model: nn.Module, optimizer: torch.optim.Optimizer, epoch: int, path: str | Path) -> None:
-    """Save model and optimizer state."""
+def save_checkpoint(
+    model: nn.Module,
+    optimizer: torch.optim.Optimizer,
+    epoch: int,
+    path: str | Path,
+    best_model_state_dict: dict[str, torch.Tensor] | None = None,
+    best_validation_loss: float | None = None,
+) -> None:
+    """Save resumable training state and the best model for inference."""
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    torch.save({"epoch": epoch, "model_state_dict": model.state_dict(), "optimizer_state_dict": optimizer.state_dict()}, destination)
+    checkpoint = {
+        "epoch": epoch,
+        "model_state_dict": best_model_state_dict or model.state_dict(),
+        "last_model_state_dict": model.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+    }
+    if best_validation_loss is not None:
+        checkpoint["best_validation_loss"] = best_validation_loss
+    torch.save(checkpoint, destination)
+
+
+def write_epoch_metrics(
+    path: str | Path,
+    epoch: int,
+    train_loss: float,
+    validation_loss: float,
+    append: bool = False,
+) -> None:
+    """Persist one epoch's losses to a CSV history file."""
+    destination = Path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    should_append = append and destination.is_file() and destination.stat().st_size > 0
+    with destination.open(
+        "a" if should_append else "w",
+        newline="",
+        encoding="utf-8",
+    ) as history_file:
+        writer = csv.writer(history_file)
+        if not should_append:
+            writer.writerow(("epoch", "train_loss", "validation_loss"))
+        writer.writerow((epoch, train_loss, validation_loss))

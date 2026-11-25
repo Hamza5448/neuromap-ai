@@ -1,0 +1,42 @@
+project:
+  name: neuromap-ai
+  task: binary_whole_tumor_segmentation_3d
+  seed: 42
+
+data:
+  modalities:
+    - t1
+    - t1ce
+    - t2
+    - flair
+  patch_size:
+    - 96
+    - 96
+    - 64
+
+model:
+  architecture: 3d_unet
+  in_channels: 4
+  out_channels: 1
+  channels:
+    - 16
+    - 32
+    - 64
+    - 128
+
+training:
+  batch_size: 1
+  patches_per_case: 2
+  epochs: 50
+  learning_rate: 0.0001
+  num_workers: 0
+
+evaluation:
+  threshold: 0.5
+  sliding_window_overlap: 0.5
+  sliding_window_batch_size: 1
+  metrics:
+    - dice
+    - iou
+    - sensitivity
+    - volumetric_error
