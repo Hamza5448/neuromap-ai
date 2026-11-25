@@ -324,14 +324,18 @@ Cloud. The screenshot shows that validation-comparison and threshold reports
 are unavailable, so live inference still needs verification with those
 artifacts restored. The final one-ZIP upload to GCR remains outstanding. Add
 the actual group number before submission; the two members' names and roll
-numbers are now included. The model archive is included in the prepared GCR
-package, not in Git; the public dataset must be downloaded separately.
+numbers are included in the app header, report, and presentation. Info
+messages now use high-contrast text on the dark theme. The model archive is
+included in the submission package, not in Git; the public dataset must be
+downloaded separately.
 
-A draft package containing source code, report, presentation, evaluation
-evidence, and the model archive is at
-`artifacts/NeuroMap_AI_GCR_Submission_DRAFT.zip`. Add the group number, refresh
-the report and slides to reflect the deployment, and rebuild it before the
-GCR upload.
+The portable submission bundle containing source code, report, presentation,
+evaluation evidence, and the model archive is
+`artifacts/NeuroMap_AI_Submission.zip`. The report still has a group-number
+placeholder because the number was not provided; fill it in before GCR upload
+if required by the instructor. The DOCX/PDF report and slide deck also predate
+the Cloud deployment screenshot and should be refreshed before GCR upload.
+The ZIP does not contain the dataset.
 
 The four trained checkpoints and their histories, configurations, and
 validation reports are bundled locally as

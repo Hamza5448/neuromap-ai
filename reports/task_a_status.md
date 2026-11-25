@@ -46,6 +46,9 @@ Streamlit Community Cloud screenshot.
 - Both browser exports were downloaded and verified: the NIfTI mask is binary,
   240 x 240 x 155 with 1 mm spacing, and the CSV contains the expected
   measurement fields and values.
+- Updated the app header with both team members and improved alert contrast.
+  Browser inspection measured at least 11.6:1 contrast for the info message
+  styling against both ends of its gradient background.
 - Final results and error-analysis docs include the 3D held-out metrics. The
   final test suite passes (40 tests), and Python compileall succeeds.
 
@@ -59,13 +62,16 @@ Streamlit Community Cloud screenshot.
   Community Cloud. It also shows that validation-comparison and threshold
   reports are unavailable; verify live inference after restoring these
   artifacts. The screenshot is not an end-to-end cloud inference test.
+- The UI update is pushed to `docs/final-submission-materials` but is not yet
+  merged into the deployment's branch; merge/redeploy before expecting the
+  live app to show the contrast improvement.
 - The report now lists Fizza Fatima (24i-3077) and Irtaza Abid (24i-3085).
   Add the group number before submission; it was not provided.
-- A draft single-ZIP GCR package is prepared at
-  `artifacts/NeuroMap_AI_GCR_Submission_DRAFT.zip`; it contains source,
-  report, presentation, evaluation evidence, and the model archive. Add the
-  group number, refresh the report and slides to reflect deployment, and
-  rebuild the ZIP before uploading it to GCR.
+- The portable ZIP at `artifacts/NeuroMap_AI_Submission.zip` contains source,
+  report, presentation, evaluation evidence, and the model archive. The report
+  still has a group-number placeholder because no group number was supplied;
+  replace it before GCR upload if required. The DOCX/PDF report and slide deck
+  predate the deployment screenshot and need refreshed deployment wording.
 - The four final checkpoints and histories are packaged locally in the
   Git-ignored `artifacts/submission_models_2026-11-25.zip` (SHA-256 is in
   `submission/artifact_access.md`). Share that archive using
