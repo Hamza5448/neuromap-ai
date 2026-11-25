@@ -1,6 +1,7 @@
 # Task A status
 
-Last verified: November 25, 2026, 14:38 local time
+Last updated: November 25, 2026; deployment status is based on the team's
+Streamlit Community Cloud screenshot.
 
 ## Completed
 
@@ -42,24 +43,36 @@ Last verified: November 25, 2026, 14:38 local time
   end-to-end smoke runs on validation patient BRATS_029 with augmented 2D and
   3D inference, overlays, measurements, and CUDA. The app health endpoint
   returned HTTP 200, and inference remains gated on complete training history.
+- Both browser exports were downloaded and verified: the NIfTI mask is binary,
+  240 x 240 x 155 with 1 mm spacing, and the CSV contains the expected
+  measurement fields and values.
 - Final results and error-analysis docs include the 3D held-out metrics. The
   final test suite passes (40 tests), and Python compileall succeeds.
 
-## In progress
-
-- Both export controls were clicked in the browser, but the browser harness did
-  not expose download events. NIfTI export round-trip is covered by unit tests;
-  confirm both actual file downloads in the user's local browser.
-
 ## Blocked or pending
 
-- A dedicated `feature/finalize-neuromap-project` branch is prepared from the
-  supplied repository's `main`: `https://github.com/Hamza5448/neuromap-ai`.
-  The feature branch is intended to be pushed and merged through the normal
-  review process. `.gitignore` preserves the remote repository's existing
-  dataset/artifact protections and additionally excludes checkpoints, split
-  manifests, and generated reports. The split manifest contains absolute
-  `E:\NeuroMap` paths and must be recreated on each machine. See
+- The code is merged into the GitHub `main` branch. Final report, presentation,
+  pipeline diagram, qualitative validation figure, and artifact-access
+  instructions are prepared in `submission/` and updated against the supplied
+  AI2002 Project Statement and Software Category Rubric.
+- The team-provided screenshot confirms that the app is running on Streamlit
+  Community Cloud. It also shows that validation-comparison and threshold
+  reports are unavailable; verify live inference after restoring these
+  artifacts. The screenshot is not an end-to-end cloud inference test.
+- The report now lists Fizza Fatima (24i-3077) and Irtaza Abid (24i-3085).
+  Add the group number before submission; it was not provided.
+- A draft single-ZIP GCR package is prepared at
+  `artifacts/NeuroMap_AI_GCR_Submission_DRAFT.zip`; it contains source,
+  report, presentation, evaluation evidence, and the model archive. Add the
+  group number, refresh the report and slides to reflect deployment, and
+  rebuild the ZIP before uploading it to GCR.
+- The four final checkpoints and histories are packaged locally in the
+  Git-ignored `artifacts/submission_models_2026-11-25.zip` (SHA-256 is in
+  `submission/artifact_access.md`). Share that archive using
+  instructor-approved storage. The dataset is available from the official MSD
+  source and must be downloaded by the evaluator; do not commit it or the
+  machine-specific split manifest.
+- Do not push the dataset or model archive. See
   [GITHUB_PUSH_REMINDER.txt](./GITHUB_PUSH_REMINDER.txt); never push the parent
   `C:\Users\Lab` repository.
 

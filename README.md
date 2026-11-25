@@ -310,3 +310,33 @@ Windows paths:
 
 The seed remains `42`, so the patient assignment is identical to the local
 manifest while using paths valid in Colab.
+
+## Final submission materials
+
+The report, editable presentation, qualitative validation figure, and
+evaluator handoff notes are in [`submission/`](./submission/). They were
+updated against the AI2002 project statement and Software Category rubric.
+The presentation has 13 slides and includes both aggregate metrics and an
+individual validation overlay example.
+
+The team has provided a screenshot of the app running on Streamlit Community
+Cloud. The screenshot shows that validation-comparison and threshold reports
+are unavailable, so live inference still needs verification with those
+artifacts restored. The final one-ZIP upload to GCR remains outstanding. Add
+the actual group number before submission; the two members' names and roll
+numbers are now included. The model archive is included in the prepared GCR
+package, not in Git; the public dataset must be downloaded separately.
+
+A draft package containing source code, report, presentation, evaluation
+evidence, and the model archive is at
+`artifacts/NeuroMap_AI_GCR_Submission_DRAFT.zip`. Add the group number, refresh
+the report and slides to reflect the deployment, and rebuild it before the
+GCR upload.
+
+The four trained checkpoints and their histories, configurations, and
+validation reports are bundled locally as
+`artifacts/submission_models_2026-11-25.zip`. This generated archive is ignored
+by Git. If GCR limits require separate transfer, share it through
+instructor-approved storage. The dataset is not included; download it from the
+official MSD source and regenerate the machine-specific split manifest as described in
+[`submission/artifact_access.md`](./submission/artifact_access.md).
