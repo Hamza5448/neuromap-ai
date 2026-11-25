@@ -333,7 +333,9 @@ The portable submission bundle containing source code, report, presentation,
 evaluation evidence, and the model archive is
 `artifacts/NeuroMap_AI_Submission.zip`. The report still has a group-number
 placeholder because the number was not provided; fill it in before GCR upload
-if required by the instructor. The ZIP does not contain the dataset.
+if required by the instructor. The DOCX/PDF report and slide deck also predate
+the Cloud deployment screenshot and should be refreshed before GCR upload.
+The ZIP does not contain the dataset.
 
 The four trained checkpoints and their histories, configurations, and
 validation reports are bundled locally as

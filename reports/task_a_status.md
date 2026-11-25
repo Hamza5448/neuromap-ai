@@ -70,7 +70,8 @@ Streamlit Community Cloud screenshot.
 - The portable ZIP at `artifacts/NeuroMap_AI_Submission.zip` contains source,
   report, presentation, evaluation evidence, and the model archive. The report
   still has a group-number placeholder because no group number was supplied;
-  replace it before GCR upload if required.
+  replace it before GCR upload if required. The DOCX/PDF report and slide deck
+  predate the deployment screenshot and need refreshed deployment wording.
 - The four final checkpoints and histories are packaged locally in the
   Git-ignored `artifacts/submission_models_2026-11-25.zip` (SHA-256 is in
   `submission/artifact_access.md`). Share that archive using

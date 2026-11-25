@@ -12,6 +12,8 @@ of the app running on Streamlit Community Cloud. The screenshot shows missing
 validation-comparison and threshold reports, so live inference still needs
 verification after those artifacts are restored. The app header identifies
 both members; its information alerts use high-contrast text on the dark theme.
+The formatted report and slide deck were generated before the deployment
+screenshot; refresh their deployment-status wording before final GCR upload.
 
 ## Deliverables
 
@@ -51,6 +53,7 @@ The model archive is included in the prepared package; the large public
 dataset is not. Creating the package does not submit it to GCR.
 The portable bundle is at `artifacts/NeuroMap_AI_Submission.zip`. The report
 still has a group-number placeholder because the number was not supplied.
-This screenshot confirms the app loads, not end-to-end cloud inference.
+This screenshot confirms the app loads, not end-to-end cloud inference. The
+formatted report and slide deck should be refreshed before GCR upload.
 
 These are research-prototype results, not clinical evidence or medical advice.
