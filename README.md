@@ -317,17 +317,23 @@ Open the deployed NeuroMap app at
 [neuromap-ai-ykwthcitvmhafuyomhtqtx.streamlit.app](https://neuromap-ai-ykwthcitvmhafuyomhtqtx.streamlit.app/).
 For a quick exhibition run:
 
-1. Select **Preloaded sample**.
-2. Choose a validation patient and segmentation model.
-3. Click **Run segmentation** and wait for the results.
-4. Review the MRI overlay and volume/segmentation metrics.
-5. Test both the NIfTI mask and CSV download buttons.
+1. Select **Upload a 4D NIfTI**.
+2. Upload one Task01_BrainTumour image from `imagesTr` (`.nii` or `.nii.gz`).
+3. Confirm that the last image axis is ordered T1, T1ce, T2, FLAIR.
+4. Choose a segmentation model, then click **Run segmentation**.
+5. Review the MRI overlay and volume/segmentation metrics.
+6. Test both the NIfTI mask and CSV download buttons.
 
 The app's validation-comparison and threshold notices explain when it falls
 back to the unaugmented model or configured threshold. If either notice is
 shown, confirm the matching validation JSON reports are available to the
 deployed app before presenting its model-selection results. The info notices
-use high-contrast text against the dark theme.
+use high-contrast text against the dark theme. The preloaded-sample option
+requires the split manifest and dataset paths, which are not included in the
+public repository; it currently reports a missing manifest on the deployed
+app. Model checkpoints are also excluded from Git, so confirm the deployed
+runtime has its checkpoint before treating successful upload as proof that
+inference works.
 
 ## Final submission materials
 
