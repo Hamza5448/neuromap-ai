@@ -72,7 +72,7 @@ streamlit run app.py
 ```
 
 The team has provided a screenshot of the app running on Streamlit Community
-Cloud. The screenshot reports that validation-comparison and threshold reports
-are unavailable, so confirm those artifacts are restored and test live
-inference before submission. The app is a research prototype, not a clinical
-service.
+Cloud. The latest manual check found the preloaded-sample manifest and selected
+model checkpoint missing from the deployed runtime. Restore the required
+artifacts and test live inference before relying on the hosted app. The app is
+a research prototype, not a clinical service.

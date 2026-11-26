@@ -356,7 +356,7 @@ def main() -> None:
             <p class="nm-eyebrow">NEUROMAP · RESEARCH WORKSPACE</p>
             <h1>Brain MRI, made more understandable.</h1>
             <p class="nm-subtitle">Explore multimodal scans, review segmentation overlays, and inspect volume measurements in one focused workspace.</p>
-            <p class="nm-team">Fizza Fatima (24i-3077) · Irtaza Abid (24i-3085)</p>
+            <p class="nm-team">Fizza Fatima (24i-3077) · Irtaza Abid (24i-3085) · Hamza Ahmad (24i-3104)</p>
           </div>
           <div class="nm-badge">2D / 3D U-Net · Research prototype</div>
         </section>
@@ -560,8 +560,8 @@ def main() -> None:
     )
     if not checkpoint_exists:
         st.error(
-            f"Trained checkpoint not found: {checkpoint_path}. "
-            "Train this model before running inference."
+            f"Trained checkpoint is not available in this runtime: {checkpoint_path}. "
+            "Restore the supplied checkpoint and matching training history before running inference."
         )
     elif completed_epochs is None:
         st.info(

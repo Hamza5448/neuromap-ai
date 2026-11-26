@@ -6,14 +6,14 @@ document contains illustrative project examples; the Project Statement and
 Rubric define the mandatory deliverables and evaluation criteria.
 
 The report and presentation explicitly identify Path A (Software-Based).
-The report lists Fizza Fatima (24i-3077) and Irtaza Abid (24i-3085). Add the
-actual group number before submission. The team has since provided a screenshot
-of the app running on Streamlit Community Cloud. The screenshot shows missing
-validation-comparison and threshold reports, so live inference still needs
-verification after those artifacts are restored. The app header identifies
-both members; its information alerts use high-contrast text on the dark theme.
-The formatted report and slide deck were generated before the deployment
-screenshot; refresh their deployment-status wording before final GCR upload.
+The report lists Fizza Fatima (24i-3077), Irtaza Abid (24i-3085), and
+Hamza Ahmad (24i-3104). Add the actual group number before submission.
+The latest browser check shows that the deployed runtime lacks the preloaded-sample
+manifest and the selected model checkpoint, so hosted inference is not yet
+verified. The app header identifies all three members; its information alerts
+use high-contrast text on the dark theme. The formatted report and slides now
+record the latest deployment check; the report still has a group-number
+placeholder.
 
 ## Deliverables
 

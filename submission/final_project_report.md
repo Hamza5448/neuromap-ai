@@ -7,7 +7,7 @@ Selected path: **Path A - Software-Based**
 Project stage: Stage A research prototype  
 Final submission deadline: December 6, 2026  
 Group number: **[Complete before submission]**  
-Group members: **Fizza Fatima (24i-3077); Irtaza Abid (24i-3085)**
+Group members: **Fizza Fatima (24i-3077); Irtaza Abid (24i-3085); Hamza Ahmad (24i-3104)**
 
 > **Safety statement:** NeuroMap is a research prototype. It is not a medical
 > device and must not be used for diagnosis, treatment decisions, or
@@ -249,14 +249,15 @@ used for the final model comparison.
    tumor-burden determination.
 4. **No uncertainty estimates.** The reported point metrics do not describe
    all sources of model or annotation uncertainty.
-5. **Deployment.** The app is a local demonstration; public hosting,
-   security review, workflow validation, and clinical governance have not been
-   completed.
-6. **Deployment and submission.** The local Streamlit app is functional and
-   smoke-tested, but it has not been deployed to Streamlit Community Cloud.
-   The project statement makes Streamlit deployment mandatory for Path A.
-   The group must also submit one ZIP containing the required deliverables on
-   GCR; preparing this package does not itself constitute submission.
+5. **Deployment.** A public Streamlit Community Cloud instance is available,
+   but the latest manual check found the preloaded-sample manifest and model
+   checkpoint missing from its runtime. Hosted inference is not yet verified.
+   Security review, workflow validation, and clinical governance are also
+   outside this research prototype.
+6. **Submission.** Path A requires a working Streamlit deployment. Restore the
+   required artifacts and complete an end-to-end inference check. The group
+   must also submit one ZIP containing the required deliverables on GCR;
+   preparing or transferring a ZIP does not itself constitute submission.
 
 ## 8. Reproducibility and handoff
 
@@ -275,9 +276,10 @@ official MSD source; regenerate the split on the receiving computer using the
 command in `artifact_access.md`, because the training manifest contains
 machine-specific absolute paths.
 
-The preloaded study workflow is suitable for a local demonstration when the
-dataset, checkpoints, and local validation reports are restored. Streamlit
-Community Cloud deployment and GCR submission remain outstanding.
+The deployed Streamlit UI is accessible, but the latest manual check found
+that its preloaded manifest and model checkpoint are missing. Restore the
+required artifacts and verify inference before relying on cloud deployment.
+The required GCR submission remains outstanding.
 
 ## 9. Conclusion
 
@@ -285,11 +287,10 @@ NeuroMap implements and evaluates multimodal 2D, augmented 2D, FLAIR-only
 2D, and patch-based 3D whole-tumor segmentation on a corrected,
 patient-separated split. Validation-only selection chose the augmented
 multimodal 2D model; its test Dice was 0.84895 on 72 held-out patients. The
-application provides an end-to-end local research workflow for study
-selection, segmentation review, measurement, and export. Core model and
-evaluation work is complete, but final Path A compliance is not yet complete:
-Streamlit Community Cloud deployment, group identification, and the required
-GCR ZIP submission remain outstanding.
+application provides an end-to-end workflow for study selection, segmentation
+review, measurement, and export when the required data and model artifacts are
+available. Core model and evaluation work is complete, but hosted inference
+and the required GCR ZIP submission still need final verification.
 
 ## References
 

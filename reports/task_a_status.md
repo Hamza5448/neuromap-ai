@@ -1,7 +1,7 @@
 # Task A status
 
-Last updated: November 25, 2026; deployment status is based on the team's
-Streamlit Community Cloud screenshot.
+Last updated: November 26, 2026; deployment status includes the team's
+manual Streamlit Community Cloud check.
 
 ## Completed
 
@@ -59,19 +59,20 @@ Streamlit Community Cloud screenshot.
   instructions are prepared in `submission/` and updated against the supplied
   AI2002 Project Statement and Software Category Rubric.
 - The team-provided screenshot confirms that the app is running on Streamlit
-  Community Cloud. It also shows that validation-comparison and threshold
-  reports are unavailable; verify live inference after restoring these
-  artifacts. The screenshot is not an end-to-end cloud inference test.
-- The UI update is pushed to `docs/final-submission-materials` but is not yet
-  merged into the deployment's branch; merge/redeploy before expecting the
-  live app to show the contrast improvement.
-- The report now lists Fizza Fatima (24i-3077) and Irtaza Abid (24i-3085).
+  Community Cloud, but the latest manual check found the preloaded-sample
+  manifest and selected model checkpoint missing from the deployed runtime.
+  Restore the required artifacts and complete an inference test before
+  claiming the hosted workflow is operational.
+- The high-contrast UI update is merged into `main`. The new team-member
+  attribution and clearer missing-checkpoint message still need to be merged
+  and redeployed.
+- The report now lists Fizza Fatima (24i-3077), Irtaza Abid (24i-3085), and
+  Hamza Ahmad (24i-3104).
   Add the group number before submission; it was not provided.
 - The portable ZIP at `artifacts/NeuroMap_AI_Submission.zip` contains source,
-  report, presentation, evaluation evidence, and the model archive. The report
-  still has a group-number placeholder because no group number was supplied;
-  replace it before GCR upload if required. The DOCX/PDF report and slide deck
-  predate the deployment screenshot and need refreshed deployment wording.
+  report, presentation, evaluation evidence, and the model archive. Rebuild it
+  after final edits. The report still has a group-number placeholder because
+  no group number was supplied; replace it before GCR upload if required.
 - The four final checkpoints and histories are packaged locally in the
   Git-ignored `artifacts/submission_models_2026-11-25.zip` (SHA-256 is in
   `submission/artifact_access.md`). Share that archive using

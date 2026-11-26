@@ -7,6 +7,12 @@ multimodal 3D U-Net through a Streamlit interface.
 
 The project is not a medical diagnostic or treatment system.
 
+## Project team
+
+- Fizza Fatima (24i-3077)
+- Irtaza Abid (24i-3085)
+- Hamza Ahmad (24i-3104)
+
 ## Stage A scope
 
 - Medical Segmentation Decathlon `Task01_BrainTumour`.
@@ -343,21 +349,21 @@ updated against the AI2002 project statement and Software Category rubric.
 The presentation has 13 slides and includes both aggregate metrics and an
 individual validation overlay example.
 
-The deployment URL above was provided by the team. Confirm live inference and
-exports from the deployed app before the exhibition. The final one-ZIP upload
-to GCR remains outstanding. Add the actual group number before submission if
-required; the two members' names and roll numbers are included in the app
-header, report, and presentation. The model archive is included in the
-submission package, not in Git; the public dataset must be downloaded
+The deployment URL above was provided by the team. The latest manual check
+found that the hosted runtime lacks the preloaded manifest and selected model
+checkpoint, so inference and exports still need verification. The final
+one-ZIP upload to GCR remains outstanding. Add the actual group number before
+submission if required; all three members' names and roll numbers are included
+in the app header, report, and presentation. The model archive is included in
+the submission package, not in Git; the public dataset must be downloaded
 separately.
 
 The portable submission bundle containing source code, report, presentation,
 evaluation evidence, and the model archive is
-`artifacts/NeuroMap_AI_Submission.zip`. The report still has a group-number
-placeholder because the number was not provided; fill it in before GCR upload
-if required by the instructor. The DOCX/PDF report and slide deck also predate
-the Cloud deployment screenshot and should be refreshed before GCR upload.
-The ZIP does not contain the dataset.
+`artifacts/NeuroMap_AI_Submission.zip`. Rebuild it after any final edits. The
+report still has a group-number placeholder because the number was not
+provided; fill it in before GCR upload if required by the instructor. The ZIP
+does not contain the dataset.
 
 The four trained checkpoints and their histories, configurations, and
 validation reports are bundled locally as
