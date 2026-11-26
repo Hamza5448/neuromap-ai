@@ -311,6 +311,24 @@ Windows paths:
 The seed remains `42`, so the patient assignment is identical to the local
 manifest while using paths valid in Colab.
 
+## Deployed Streamlit app
+
+Open the deployed NeuroMap app at
+[neuromap-ai-ykwthcitvmhafuyomhtqtx.streamlit.app](https://neuromap-ai-ykwthcitvmhafuyomhtqtx.streamlit.app/).
+For a quick exhibition run:
+
+1. Select **Preloaded sample**.
+2. Choose a validation patient and segmentation model.
+3. Click **Run segmentation** and wait for the results.
+4. Review the MRI overlay and volume/segmentation metrics.
+5. Test both the NIfTI mask and CSV download buttons.
+
+The app's validation-comparison and threshold notices explain when it falls
+back to the unaugmented model or configured threshold. If either notice is
+shown, confirm the matching validation JSON reports are available to the
+deployed app before presenting its model-selection results. The info notices
+use high-contrast text against the dark theme.
+
 ## Final submission materials
 
 The report, editable presentation, qualitative validation figure, and
@@ -319,15 +337,13 @@ updated against the AI2002 project statement and Software Category rubric.
 The presentation has 13 slides and includes both aggregate metrics and an
 individual validation overlay example.
 
-The team has provided a screenshot of the app running on Streamlit Community
-Cloud. The screenshot shows that validation-comparison and threshold reports
-are unavailable, so live inference still needs verification with those
-artifacts restored. The final one-ZIP upload to GCR remains outstanding. Add
-the actual group number before submission; the two members' names and roll
-numbers are included in the app header, report, and presentation. Info
-messages now use high-contrast text on the dark theme. The model archive is
-included in the submission package, not in Git; the public dataset must be
-downloaded separately.
+The deployment URL above was provided by the team. Confirm live inference and
+exports from the deployed app before the exhibition. The final one-ZIP upload
+to GCR remains outstanding. Add the actual group number before submission if
+required; the two members' names and roll numbers are included in the app
+header, report, and presentation. The model archive is included in the
+submission package, not in Git; the public dataset must be downloaded
+separately.
 
 The portable submission bundle containing source code, report, presentation,
 evaluation evidence, and the model archive is
